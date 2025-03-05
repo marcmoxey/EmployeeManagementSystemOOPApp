@@ -11,12 +11,21 @@ namespace ConsoleUI
         public static EmployeeModel AddEmployee()
         {
             EmployeeModel employee = new EmployeeModel();
-            Console.WriteLine("Add an employee to the system\n");
+            Console.WriteLine("\nAdd an employee to the system");
 
             // Ask for Employee name
             Console.Write("What is the employee name: ");
             string employeeData = Console.ReadLine();
-            employee.Name = employeeData;
+            if (employeeData != "") 
+            {
+                employee.Name = employeeData;
+            }
+            else
+            {
+                Console.Write("Please enter a valid name. What is the employee name: ");
+                employeeData = Console.ReadLine();
+            }
+
 
             // Set employeeID
             SetEmployeeID(employee);
@@ -24,6 +33,15 @@ namespace ConsoleUI
             // Ask what Department they are in
             Console.Write("What department is employee assign to: ");
             employeeData = Console.ReadLine();
+            if (employeeData != "")
+            {
+                employee.Department = employeeData;
+            }
+            else
+            {
+                Console.Write("Please enter a valid Department. What department is employee assign to: ");
+                employeeData = Console.ReadLine();
+            }
 
             // Ask what is the employee salary
             Console.Write("What is the salary for the employee: ");
@@ -38,18 +56,39 @@ namespace ConsoleUI
                 employeeData = Console.ReadLine();
                 isValidSalary = int.TryParse(employeeData, out salary);
             }
-            employee.Salary = salary;   
+            employee.Salary = salary;
+
+            Console.WriteLine($"You successfully added Employee Name: {employee.Name} - Employee ID: {employee.EmployeeID} to the system");
 
             return employee;
         }
 
-        public static void RemoveEmployee() 
-        { 
+        public static List<EmployeeModel> RemoveEmployee(string employeeID, List<EmployeeModel> employees) 
+        {
+            // loop through list of the employees
+            for (int i = 0; i < employees.Count; i++) 
+            {
+                // check if employeeID matches
+                if (employees[i].EmployeeID == employeeID)
+                {
+                    // remove employee
+                    employees.RemoveAt(i);
+                    break;
+                    Console.WriteLine($"You successfully remove {employees[i].Name} from the system.");
+                }
+            }
+            
+            return employees;
+          
         }
 
-        public static void DisplayAllEmployees() 
-        { 
-        
+        public static void DisplayAllEmployees(List<EmployeeModel> employees) 
+        {
+            Console.WriteLine();
+            foreach (var employee in employees)
+            {
+                Console.WriteLine($"Employee ID: {employee.EmployeeID} Employee Name: {employee.Name}");
+            }
         }
 
         public static void SetEmployeeID(EmployeeModel employee)
